@@ -56,10 +56,10 @@ function App() {
        startGame();
      }
     if (randomNumber === 1) {
-      resetGame();
+      endGame();
     }
     if (!game) {
-      newGame();
+      resetGame();
     }
   }
 
@@ -74,14 +74,14 @@ function App() {
     })
   }
 
-  const resetGame = () => {
+  const endGame = () => {
     setGame(() => {
       return !game
     })
     setRoll(1)
   }
 
-  const newGame = () => {
+  const resetGame = () => {
     setRoll(maxRoll)
     setRolls([])
   }
