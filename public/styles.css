@@ -1,0 +1,89 @@
+body {
+    margin: 0;
+}
+
+p {
+    text-align: center;
+}
+
+.reel {
+    height: 1em;
+    display: flex;
+    align-items: flex-end;
+    overflow-y: hidden;
+  
+    /** CUSTOMISE BELOW */
+    font-size: 45px;
+    font-weight: 300;
+    color: #E2AB5B;
+    border-bottom: 1px solid #0492BD;
+    line-height: 0.95em; /* adjusted for Lato font */
+}
+
+form {
+    position: relative;
+    width: 480px;
+    margin: 30px auto 20px auto;
+    background: #fff;
+    padding: 15px;
+    border-radius: 7px;
+    box-shadow: 0 1px 5px rgb(138, 137, 137);
+}
+
+form input,
+form textarea {
+    width: 100%;
+    border: none;
+    padding: 4px;
+    outline: none;
+    font-size: 1.2em;
+    font-family: inherit;
+    resize: none;
+}
+
+form button {
+    position: absolute;
+    right: 18px;
+    bottom: -18px;
+    background: #f5ba13;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    outline: none;
+}
+
+.card-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.card {
+    width: 50%;
+}
+
+.group {
+    transition-delay: 0ms;
+    transition-timing-function: ease-in-out;
+    transform: translate(0, 0);
+}
+
+.group .number {
+    height: 1em;
+}
+
+.reel {
+    height: 1em;
+    display: flex;
+    align-items: flex-end;
+    overflow-y: hidden;
+    /** CUSTOMISE BELOW */
+    font-size: 45px;
+    font-weight: 300;
+    color: #E2AB5B;
+    border-bottom: 1px solid #0492BD;
+    line-height: 0.95em; /* adjusted for Lato font */
+}
