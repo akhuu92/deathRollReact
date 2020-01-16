@@ -29,6 +29,14 @@ const theme = {
   },
 };
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
+
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -36,35 +44,46 @@ function getRandomIntInclusive(min, max) {
 }
 
 function App() {
-  /* 
-    Save state (last roll value)
-  */
   const maxRoll = 100;
   const [game, setGame] =  useState(true);
   const [roll, setRoll] = useState(maxRoll);
   const [rolls, setRolls] = useState([]);
+  const randomNumber = getRandomIntInclusive(1, roll)
   
   function handleClick() {
-    let randomNumber = getRandomIntInclusive(1, roll)
-    if (game) {
-      setRoll(() => {
-        return (
-          randomNumber
-        )
-      })
-      setRolls((prevRolls) => {
-        return [...prevRolls, randomNumber]
-      })
-    }
+    //let randomNumber = getRandomIntInclusive(1, roll)
+     if (game) {
+       startGame();
+     }
     if (randomNumber === 1) {
-      setGame(() => {
-        return !game
-      })
-      setRoll(1)
+      resetGame();
     }
     if (!game) {
-      setRoll(maxRoll)
+      newGame();
     }
+  }
+
+  const startGame = () => {
+    setRoll(() => {
+      return (
+        randomNumber
+      )
+    })
+    setRolls((prevRolls) => {
+      return [...prevRolls, randomNumber]
+    })
+  }
+
+  const resetGame = () => {
+    setGame(() => {
+      return !game
+    })
+    setRoll(1)
+  }
+
+  const newGame = () => {
+    setRoll(maxRoll)
+    setRolls([])
   }
 
   return (
@@ -74,13 +93,9 @@ function App() {
         <Reel text={roll.toString()} theme={theme}/>
       </div>
       <Grid container="true" justify="center">
-        {game ? (
           <Button onClick={handleClick} variant="contained" color="primary">
-            Roll
+            {game ? 'Roll' : 'Start Death Roll'}
           </Button>
-        ) : <Button onClick={handleClick} variant="contained" color="primary">
-            Start Death Roll
-          </Button>} 
       </Grid>
       <Grid container="true" justify="center">
           <List>
