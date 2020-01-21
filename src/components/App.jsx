@@ -6,6 +6,7 @@ import { Container, Grid } from '@material-ui/core';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
+import ButtonIcon from './ButtonIcon';
 
 const theme = {
   reel: {
@@ -56,7 +57,7 @@ function App() {
        startGame();
      }
     if (randomNumber === 1) {
-      endGame();
+      endGame(1);
     }
     if (!game) {
       resetGame();
@@ -74,16 +75,17 @@ function App() {
     })
   }
 
-  const endGame = () => {
+  const endGame = (value) => {
     setGame(() => {
       return !game
     })
-    setRoll(1)
+    setRoll(value)
   }
 
   const resetGame = () => {
     setRoll(maxRoll)
     setRolls([])
+    endGame(maxRoll)
   }
 
   return (
@@ -93,9 +95,12 @@ function App() {
         <Reel text={roll.toString()} theme={theme}/>
       </div>
       <Grid container="true" justify="center">
-          <Button onClick={handleClick} variant="contained" color="primary">
-            {game ? 'Roll' : 'Start Death Roll'}
-          </Button>
+        <Grid>
+          <ButtonIcon onClick={handleClick} label={game ? 'Roll' : 'Start Death Roll'}/>
+        </Grid>
+        <Grid>
+          <ButtonIcon onClick={resetGame} label="Reset"/>
+        </Grid>
       </Grid>
       <Grid container="true" justify="center">
           <List>
