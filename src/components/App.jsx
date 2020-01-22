@@ -6,6 +6,7 @@ import { Container, Grid } from '@material-ui/core';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
+import ButtonIcon from './ButtonIcon';
 
 const theme = {
   reel: {
@@ -29,6 +30,14 @@ const theme = {
   },
 };
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
+
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -36,35 +45,47 @@ function getRandomIntInclusive(min, max) {
 }
 
 function App() {
-  /* 
-    Save state (last roll value)
-  */
   const maxRoll = 100;
-  const [game, setGame] =  useState(true);
+  const [game, setGame] =  useState(false);
   const [roll, setRoll] = useState(maxRoll);
   const [rolls, setRolls] = useState([]);
+  const randomNumber = getRandomIntInclusive(1, roll)
   
   function handleClick() {
-    let randomNumber = getRandomIntInclusive(1, roll)
-    if (game) {
-      setRoll(() => {
-        return (
-          randomNumber
-        )
-      })
-      setRolls((prevRolls) => {
-        return [...prevRolls, randomNumber]
-      })
-    }
+    //let randomNumber = getRandomIntInclusive(1, roll)
+     if (game) {
+       startGame();
+     }
     if (randomNumber === 1) {
-      setGame(() => {
-        return !game
-      })
-      setRoll(1)
+      endGame(1);
     }
     if (!game) {
-      setRoll(maxRoll)
+      resetGame();
     }
+  }
+
+  const startGame = () => {
+    setRoll(() => {
+      return (
+        randomNumber
+      )
+    })
+    setRolls((prevRolls) => {
+      return [...prevRolls, randomNumber]
+    })
+  }
+
+  const endGame = (value) => {
+    setGame(() => {
+      return !game
+    })
+    setRoll(value)
+  }
+
+  const resetGame = () => {
+    setRoll(maxRoll)
+    setRolls([])
+    endGame(maxRoll)
   }
 
   return (
@@ -74,13 +95,15 @@ function App() {
         <Reel text={roll.toString()} theme={theme}/>
       </div>
       <Grid container="true" justify="center">
-        {game ? (
-          <Button onClick={handleClick} variant="contained" color="primary">
-            Roll
-          </Button>
-        ) : <Button onClick={handleClick} variant="contained" color="primary">
-            Start Death Roll
-          </Button>} 
+        <Grid>
+          <ButtonIcon onClick={handleClick} label={game ? 'Roll' : 'Start Death Roll'}/>
+        </Grid>
+        {game && <Grid>
+          <ButtonIcon onClick={resetGame} label="Reset"/>
+        </Grid>}
+        {/* <Grid>
+          <ButtonIcon onClick={resetGame} label="Reset"/>
+        </Grid> */}
       </Grid>
       <Grid container="true" justify="center">
           <List>
