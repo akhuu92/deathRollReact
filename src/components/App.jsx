@@ -46,7 +46,7 @@ function getRandomIntInclusive(min, max) {
 
 function App() {
   const maxRoll = 100;
-  const [game, setGame] =  useState(true);
+  const [game, setGame] =  useState(false);
   const [roll, setRoll] = useState(maxRoll);
   const [rolls, setRolls] = useState([]);
   const randomNumber = getRandomIntInclusive(1, roll)
@@ -98,9 +98,12 @@ function App() {
         <Grid>
           <ButtonIcon onClick={handleClick} label={game ? 'Roll' : 'Start Death Roll'}/>
         </Grid>
-        <Grid>
+        {game && <Grid>
           <ButtonIcon onClick={resetGame} label="Reset"/>
-        </Grid>
+        </Grid>}
+        {/* <Grid>
+          <ButtonIcon onClick={resetGame} label="Reset"/>
+        </Grid> */}
       </Grid>
       <Grid container="true" justify="center">
           <List>
