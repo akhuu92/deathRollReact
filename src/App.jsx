@@ -1,12 +1,12 @@
 import React, {Component, useState} from 'react';
-import ButtonAppBar from './ButtonAppBar';
+import ButtonAppBar from './components/ButtonAppBar';
 import Reel from 'react-reel';
 import Button from '@material-ui/core/Button';
 import { Container, Grid } from '@material-ui/core';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import { makeStyles } from '@material-ui/core/styles';
-import ButtonIcon from './ButtonIcon';
+import ButtonIcon from './components/ButtonIcon';
 
 const theme = {
   reel: {
@@ -45,55 +45,63 @@ function getRandomIntInclusive(min, max) {
 }
 
 function App() {
-  const maxRoll = 100;
+  const maxRoll = 10;
+  const [edit, setEdit] =  useState(false);
   const [game, setGame] =  useState(false);
   const [roll, setRoll] = useState(maxRoll);
   const [rolls, setRolls] = useState([]);
-  const randomNumber = getRandomIntInclusive(1, roll)
   
   function handleClick() {
-    //let randomNumber = getRandomIntInclusive(1, roll)
-     if (game) {
-       startGame();
-     }
-    if (randomNumber === 1) {
-      endGame(1);
-    }
-    if (!game) {
-      resetGame();
+    let randomNumber = getRandomIntInclusive(1, roll);
+
+    if (game) {
+      //setRoll(maxRoll);
+      rollValue(randomNumber);
+      
+      if (randomNumber === 1) {
+        setGame(false)
+        //resetGame();
+      }
+    } else if (!game) {
+        resetGame();
+        //rollValue(randomNumber);
+        setGame(true);
+      }
+  }
+
+  function editKeyPress(event) {
+    if (event.key === "Enter") {
+      setRoll(event.target.value);
+      setEdit(false);
     }
   }
 
-  const startGame = () => {
-    setRoll(() => {
-      return (
-        randomNumber
-      )
-    })
-    setRolls((prevRolls) => {
-      return [...prevRolls, randomNumber]
-    })
+  const handleEdit = () => {
+    setEdit(true)
   }
 
-  const endGame = (value) => {
-    setGame(() => {
-      return !game
-    })
+  const rollValue = (value) => {
     setRoll(value)
+    setRolls((prevRolls) => {
+      return [...prevRolls, value]
+    })
   }
 
   const resetGame = () => {
     setRoll(maxRoll)
+    setGame(false)
     setRolls([])
-    endGame(maxRoll)
   }
 
   return (
     <Container disableGutters="false">
       <ButtonAppBar />
-      <div className="card-container">
+      {!edit ? <div className="card-container">
         <Reel text={roll.toString()} theme={theme}/>
-      </div>
+      </div> : <input type="text" name="fname" onKeyPress={editKeyPress}></input>}
+      <Button variant="outlined" color="secondary" onClick={handleEdit}>
+        Edit
+      </Button>
       <Grid container="true" justify="center">
         <Grid>
           <ButtonIcon onClick={handleClick} label={game ? 'Roll' : 'Start Death Roll'}/>
@@ -101,9 +109,6 @@ function App() {
         {game && <Grid>
           <ButtonIcon onClick={resetGame} label="Reset"/>
         </Grid>}
-        {/* <Grid>
-          <ButtonIcon onClick={resetGame} label="Reset"/>
-        </Grid> */}
       </Grid>
       <Grid container="true" justify="center">
           <List>
