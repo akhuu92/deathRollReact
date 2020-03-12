@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import { Container, Grid } from '@material-ui/core';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import { makeStyles } from '@material-ui/core/styles';
+//import { makeStyles } from '@material-ui/core/styles';
 import ButtonIcon from './components/ButtonIcon';
 
 const theme = {
@@ -30,13 +30,13 @@ const theme = {
   },
 };
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
+// const useStyles = makeStyles(theme => ({
+//   root: {
+//     width: '100%',
+//     maxWidth: 360,
+//     backgroundColor: theme.palette.background.paper,
+//   },
+// }));
 
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
@@ -45,10 +45,11 @@ function getRandomIntInclusive(min, max) {
 }
 
 function App() {
-  const maxRoll = 10;
+  const maxRoll = 100;
   const [edit, setEdit] =  useState(false);
   const [game, setGame] =  useState(false);
   const [roll, setRoll] = useState(maxRoll);
+  const [userMaxRoll, setUserMaxRoll] = useState(null);
   const [rolls, setRolls] = useState([]);
   
   function handleClick() {
@@ -60,19 +61,30 @@ function App() {
       
       if (randomNumber === 1) {
         setGame(false)
-        //resetGame();
       }
     } else if (!game) {
         resetGame();
-        //rollValue(randomNumber);
         setGame(true);
       }
   }
 
   function editKeyPress(event) {
     if (event.key === "Enter") {
-      setRoll(event.target.value);
+      let userDefinedRoll = checkNumber(parseInt(event.target.value));
+
+      setUserMaxRoll(userDefinedRoll);
       setEdit(false);
+      setRoll(userDefinedRoll)
+      setGame(true);
+    }
+  }
+
+  function checkNumber(number) {
+    if (!Number.isNaN(number)) {
+      return number;
+    } else {
+      //set to maxRoll maybe?
+      return "Stop breaking my app. Kys";
     }
   }
 
@@ -88,7 +100,7 @@ function App() {
   }
 
   const resetGame = () => {
-    setRoll(maxRoll)
+    setRoll(userMaxRoll ? userMaxRoll : maxRoll)
     setGame(false)
     setRolls([])
   }
@@ -98,18 +110,24 @@ function App() {
       <ButtonAppBar />
       {!edit ? <div className="card-container">
         <Reel text={roll.toString()} theme={theme}/>
-      </div> : <input type="text" name="fname" onKeyPress={editKeyPress}></input>}
-      <Button variant="outlined" color="secondary" onClick={handleEdit}>
-        Edit
-      </Button>
+      </div> : <div className="card-container"> 
+        <input type="text" onKeyPress={editKeyPress}></input> 
+        </div>}
+      <div className="card-container editBtn">
+        <Button variant="outlined" color="secondary" onClick={handleEdit}>
+          Edit
+        </Button>
+      </div>
       <Grid container="true" justify="center">
         <Grid>
           <ButtonIcon onClick={handleClick} label={game ? 'Roll' : 'Start Death Roll'}/>
         </Grid>
         {game && <Grid>
           <ButtonIcon onClick={resetGame} label="Reset"/>
-        </Grid>}
+        </Grid>
+        }
       </Grid>
+      
       <Grid container="true" justify="center">
           <List>
             {rolls.map((roll, index) => {
