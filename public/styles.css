@@ -87,3 +87,25 @@ form button {
     border-bottom: 1px solid #0492BD;
     line-height: 0.95em; /* adjusted for Lato font */
 }
+
+.editBtn {
+    padding: .5rem;
+}
+
+input[type=text] {
+    text-align: center;
+    height: 1em;
+    display: flex;
+    align-items: flex-end;
+    overflow-y: hidden;
+    font-size: 50px;
+    font-weight: 300;
+    color: #E2AB5B;
+    line-height: 0.95em;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: groove;
+    outline: none;
+    width: 15%;
+}
